@@ -1,61 +1,47 @@
 import React, { Component } from 'react';
 
-type CounterState = {
-    count: number
-}
+class Form extends Component <{}, {}> {
 
-type CounterProps ={
-    title?: string,
-}
-
-class Counter extends Component<CounterProps, CounterState> {
-    constructor(props: CounterProps) {
-        super(props)
-
-        this.state = {
-            count: 0,
-        }
+    handleFocus = (e: React.FocusEvent<HTMLInputElement>) => {
+        console.log(e.currentTarget)
     }
 
-    static defaulProps: CounterProps ={
-        title: "Default counter: ",
+    handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log('Submited!');
     }
 
-    static getDeivedStateFromProps (props: CounterProps, state: CounterState): CounterState | null {
-        return false? {count: 2} : null;
-    }
-    
-    componentDidMount (): void {
-
+    handleCopy = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        console.log('Coppied');
     }
 
-    shouldComponentUpdate(nextProps: CounterProps, nextState: CounterState): boolean {
-        return true
+    handlePaste = (e: React.ClipboardEvent<HTMLInputElement>) => {
+        console.log('Pasted');
     }
 
-    AddHandlerClick = (e: React.MouseEvent<HTMLButtonElement | HTMLAnchorElement>) => {
-        console.log(`${e.clientX}, ${e.clientY}`)
-        this.setState(({ count }) => ({
-            count: ++count,
-        }))
-    }
-    MinusHandlerClick = () => {
-        this.setState(({count}) => ({
-            count: --count,
-        }))
-    }
-    render() {
+    render () {
         return (
-            <div>
-                <h1>{this.props.title} {this.state.count}</h1>
-                <button onClick={this.AddHandlerClick}>+1</button>
-                <button onClick={this.MinusHandlerClick}>-1</button>
-                <a href="#" onClick={this.MinusHandlerClick}>Link</a>
-            </div>
+            <form
+                onSubmit={this.handleSubmit}
+            >
+                <label>
+                    Simle text:
+                    <input
+                        onFocus={this.handleFocus}
+                        onCopy={this.handleCopy}
+                        onPaste={this.handlePaste}
+                        type="text"
+                        name="text"
+                    />
+                    <button
+                    type="submit"
+                    >Submit</button>
+                </label>
+            </form>
         );
     }
 }
 
-const App = () => <Counter/>
+const App:React.FC = () => <Form/>
 
 export default App;
